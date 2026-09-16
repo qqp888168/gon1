@@ -27,14 +27,50 @@
   function search(){const input=$('.search-section input')||$('.search-container input')||$('input[type=search]')||$('input[placeholder]');const term=input?.value.trim()||'';if(route!=='/search'){go('/search','q='+encodeURIComponent(term));return;}let results=$('#static-search-results');if(!results){results=document.createElement('div');results.id='static-search-results';$('.search-section').append(results);}$$('.empty-state,.search-empty,.empty-results').forEach(e=>e.hidden=true);const matched=catalog.filter(x=>term&&[x.title,x.summary,x.category].join(' ').toLowerCase().includes(term.toLowerCase()));results.innerHTML=`<p class="static-result-count">${term?'找到 '+matched.length+' 筆「'+esc(term)+'」相關內容':'請輸入關鍵字開始搜尋'}</p><div class="static-results-grid">`+matched.map(x=>`<a class="static-result-card" href="${page(x.route)}"><img src="${esc(image(x.image))}" alt=""><h3>${esc(x.title)}</h3><p>${x.price?'NT$ '+Number(x.price).toLocaleString():'閱讀文章'}</p></a>`).join('')+'</div>';}
   if(route==='/search'){const term=new URLSearchParams(location.search).get('q')||'';const input=$('.search-section input');if(input)input.value=term;if(term)search();}
 
-  let slide=0;
-  function renderHero(i){const h=$('.hero-section');if(!h)return;slide=(i+config.hero.length)%config.hero.length;const x=config.hero[slide],img=$('.cover-image--base',h);img.src=image(x.image);img.alt=x.title;$$('.course-title',h).forEach(e=>e.textContent=x.title);$$('.course-tags',h).forEach(e=>e.textContent=x.tag);$$('.progress-text',h).forEach(e=>e.textContent=`${slide+1}/${config.hero.length}`);$$('.progress-bar-horizontal',h).forEach(bar=>$$('[role=tab]',bar).forEach((e,n)=>{e.classList.toggle('is-active',n<=slide);e.setAttribute('aria-selected',String(n===slide));}));}
-  renderHero(0);if($('.hero-section'))setInterval(()=>{if(!document.hidden)renderHero(slide+1)},7000);
+  let slide=0,heroTimer;
+  const heroSection=$('.hero-section');
+  function renderHero(i){
+    if(!heroSection)return;
+    slide=(i+config.hero.length)%config.hero.length;
+    const x=config.hero[slide],img=$('.cover-image--base',heroSection);
+    img.src=image(x.image);img.alt=x.title;
+    $$('.course-title',heroSection).forEach(e=>e.textContent=x.title);
+    $$('.course-description',heroSection).forEach(e=>e.textContent=x.description||'');
+    $$('.course-tags',heroSection).forEach(e=>e.textContent=x.tag||'');
+    $$('.progress-text',heroSection).forEach(e=>e.textContent=`${slide+1}/${config.hero.length}`);
+    $$('.progress-bar-horizontal',heroSection).forEach(bar=>$$('[role=tab]',bar).forEach((e,n)=>{
+      e.classList.toggle('is-active',n===slide);
+      e.setAttribute('aria-selected',String(n===slide));
+      e.setAttribute('tabindex',n===slide?'0':'-1');
+    }));
+    scheduleHero();
+  }
+  function scheduleHero(){
+    clearTimeout(heroTimer);
+    if(!heroSection)return;
+    heroTimer=setTimeout(()=>{
+      if(!document.hidden&&!heroSection.matches(':hover,:focus-within'))renderHero(slide+1);
+      else scheduleHero();
+    },12000);
+  }
+  if(heroSection){
+    renderHero(0);
+    heroSection.addEventListener('mouseleave',scheduleHero);
+    heroSection.addEventListener('focusout',scheduleHero);
+    heroSection.addEventListener('keydown',event=>{
+      if(event.ctrlKey||event.metaKey||event.altKey||!event.target.matches('[role=tab]'))return;
+      const next=event.key==='ArrowRight'?slide+1:event.key==='ArrowLeft'?slide-1:event.key==='Home'?0:event.key==='End'?config.hero.length-1:null;
+      if(next===null)return;
+      event.preventDefault();renderHero(next);
+      const tabs=$$('[role=tab]',event.target.parentElement);tabs[slide]?.focus();
+    });
+  }
+
 
   document.addEventListener('click',event=>{
     const target=event.target instanceof Element?event.target:null;if(!target)return;
     const tab=target.closest('.hero-section [role=tab]');if(tab){event.preventDefault();event.stopPropagation();renderHero($$('[role=tab]',tab.parentElement).indexOf(tab));return;}
-    if(target.closest('.hero-section .course-cover')){go(config.hero[slide].route);return;}
+    if(target.closest('.hero-section .course-cover')){if(config.hero[slide].route)go(config.hero[slide].route);return;}
     const b=target.closest('button');
     if(b){const label=(b.getAttribute('aria-label')||b.textContent).trim();
       if(label==='選單'){let m=$('#static-mobile-menu');if(!m){m=document.createElement('nav');m.id='static-mobile-menu';m.innerHTML=[['課程','/courses'],['選品','/products'],['最新文章','/articles'],['登入 / 註冊','/login']].map(([t,r])=>`<a href="${page(r)}">${t}</a>`).join('');$('header').append(m);}m.classList.toggle('is-open');return;}
