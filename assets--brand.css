@@ -1,0 +1,10 @@
+/* Crop the source image's empty margins in the layout, preserving the artwork. */
+.header .logo-section:has(.good-age-logo),.footer .footer-logo-section:has(.good-age-logo){position:relative;display:block;height:auto;aspect-ratio:1887/504;overflow:hidden;mix-blend-mode:multiply;flex:0 0 auto}
+.header .logo-section:has(.good-age-logo){width:220px;max-width:none}
+.footer .footer-logo-section:has(.good-age-logo){width:240px;max-width:100%}
+.header .logo-image.good-age-logo,.footer .footer-logo.good-age-logo{position:absolute;display:block;left:-6.3063%;top:-18.0556%;width:115.0503%;max-width:none;height:auto;object-fit:contain}
+.header .header-container>a:has(.good-age-logo){flex-shrink:0}
+@media(max-width:1200px){.header .logo-section:has(.good-age-logo){width:200px}}
+@media(max-width:700px){.header .logo-section:has(.good-age-logo){width:180px}}
+@media(max-width:360px){.header .logo-section:has(.good-age-logo){width:140px}.header .header-container{padding-left:16px;padding-right:16px}}
+@media(max-width:300px){.header .logo-section:has(.good-age-logo){width:128px}.header .header-container{padding-left:8px;padding-right:8px}.header .mobile-actions{gap:4px}.header .mobile-actions .mobile-icon-btn,.header .mobile-actions .hamburger-btn{width:24px;min-width:24px;padding-left:0;padding-right:0}}
