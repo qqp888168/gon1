@@ -67,7 +67,21 @@
   #home-life-slogan .slogan-container{gap:12px}
   #home-life-slogan .slogan-subtitle{font-size:16px;line-height:1.9;max-width:34em}
 }
-</style></head>
+</style><style id="custom-home-feature-videos-layout">
+#home-learning-features{scroll-margin-top:96px}
+#home-learning-features .feature-image-wrapper{--notch-width:50px;--notch-half-height:70px;clip-path:polygon(0 0,100% 0,100% calc(50% - var(--notch-half-height)),calc(100% - var(--notch-width)) 50%,100% calc(50% + var(--notch-half-height)),100% 100%,0 100%,0 calc(50% + var(--notch-half-height)),var(--notch-width) 50%,0 calc(50% - var(--notch-half-height)))}
+#home-learning-features .triangle-left,#home-learning-features .triangle-right{display:none}
+#home-learning-features .feature-video{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:none}
+#home-learning-features .feature-video-toggle{position:absolute;right:16px;bottom:12px;z-index:11;display:grid;place-items:center;width:36px;height:36px;padding:0;border:1px solid #ffffff99;border-radius:50%;background:#301400a6;color:#fff;cursor:pointer}
+#home-learning-features .feature-video-toggle:hover{background:#301400dd}
+#home-learning-features .feature-video-toggle:focus-visible{outline:3px solid #ff9c51;outline-offset:3px}
+#home-learning-features .video-play-icon{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:10px solid currentColor;margin-left:3px}
+#home-learning-features .video-pause-icon{display:none;width:10px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor}
+#home-learning-features .is-playing .video-play-icon{display:none}
+#home-learning-features .is-playing .video-pause-icon{display:block}
+@media(max-width:1200px){#home-learning-features .feature-image-wrapper{--notch-width:40px;--notch-half-height:50px}}
+@media(max-width:1024px){#home-learning-features .feature-image-wrapper{--notch-width:30px;--notch-half-height:40px}}
+</style><script data-feature-videos="" defer="" src="./assets--feature-videos.js?v=20260917-videos"></script></head>
 <body>
 <div id="__nuxt">
 <div class="app-wrapper">
@@ -199,52 +213,40 @@
 <p class="slogan-subtitle" data-v-f1aa8b95="">學習，不只是多會一件事，而是讓自己跟生活、跟世界、跟人，繼續保持連結。</p>
 </div>
 </section>
-<section class="features-section" data-v-f1aa8b95="">
+<section class="features-section" data-v-f1aa8b95="" id="home-learning-features">
 <div class="features-container" data-v-f1aa8b95="">
 <div class="feature-card" data-v-f1aa8b95="">
 <div class="feature-image-wrapper" data-v-f1aa8b95="">
-<img alt="慢學、陪伴、社群感" class="feature-image" data-file="assets/6b83a9f7b702dacb.png" data-nuxt-img="" data-v-f1aa8b95="" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
+<video aria-label="為自己，再多一點可能" class="feature-image feature-video" data-poster-file="assets/6b83a9f7b702dacb.png" data-v-f1aa8b95="" height="720" id="learning-feature-video-1" loop="" muted="" playsinline="" preload="metadata" width="1280"><source src="./feature-life-possibilities.mp4" type="video/mp4"/>您的瀏覽器不支援影片播放。</video>
 <div class="triangle-left" data-v-f1aa8b95="">
 </div>
 <div class="triangle-right" data-v-f1aa8b95="">
 </div>
-</div>
-<h3 class="feature-title" data-v-f1aa8b95="">
-         慢學、陪伴、社群感
-        </h3>
-<p class="feature-description" data-v-f1aa8b95="">
-         「知時選課」是一個為輕熟齡至熟齡學習者設計的線上平台，延續社區大學四十年的教學溫度，結合現代科技的便利，讓學習回到一種舒緩的節奏——有人同行，也能安靜專注，慢慢喜歡上，再一次學習的自己。
-        </p>
+<button aria-controls="learning-feature-video-1" aria-label="播放影片：為自己，再多一點可能" class="feature-video-toggle" type="button"><span aria-hidden="true" class="video-play-icon"></span><span aria-hidden="true" class="video-pause-icon"></span></button></div>
+<h3 class="feature-title" data-v-f1aa8b95="">為自己，再多一點可能</h3>
+<p class="feature-description" data-v-f1aa8b95="">走過大半輩子，我們習慣為工作、家庭與責任忙碌。到了人生下半場，也該留一些時間給自己。學一件想學的事、找回曾經的興趣，或嘗試從沒做過的事，都可能讓生活重新有了期待。</p>
 </div>
 <div class="feature-card feature-card-center" data-v-f1aa8b95="">
 <div class="feature-image-wrapper" data-v-f1aa8b95="">
-<img alt="專為熟齡族打造" class="feature-image feature-image--shift-down" data-file="assets/a8110499b46713be.png" data-nuxt-img="" data-v-f1aa8b95="" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
+<video aria-label="跟上世界，也不丟下自己" class="feature-image feature-video" data-poster-file="assets/a8110499b46713be.png" data-v-f1aa8b95="" height="720" id="learning-feature-video-2" loop="" muted="" playsinline="" preload="metadata" width="1280"><source src="./feature-keep-up-with-world.mp4" type="video/mp4"/>您的瀏覽器不支援影片播放。</video>
 <div class="triangle-left" data-v-f1aa8b95="">
 </div>
 <div class="triangle-right" data-v-f1aa8b95="">
 </div>
-</div>
-<h3 class="feature-title" data-v-f1aa8b95="">
-         專為熟齡族打造
-        </h3>
-<p class="feature-description" data-v-f1aa8b95="">
-         「知時選課」理解熟齡學習者在使用科技時的細微不安與猶豫。我們用更清晰的步驟、更貼心的指引，讓每一次操作都能安心，也讓學習重新變成一件愉快的事。
-        </p>
+<button aria-controls="learning-feature-video-2" aria-label="播放影片：跟上世界，也不丟下自己" class="feature-video-toggle" type="button"><span aria-hidden="true" class="video-play-icon"></span><span aria-hidden="true" class="video-pause-icon"></span></button></div>
+<h3 class="feature-title" data-v-f1aa8b95="">跟上世界，也不丟下自己</h3>
+<p class="feature-description" data-v-f1aa8b95="">世界一直在變，AI、科技、生活方式也不斷往前。學習不是怕被時代淘汰，而是希望無論走到幾歲，我們依然能理解這個世界、使用新的工具，也保有自己的選擇。</p>
 </div>
 <div class="feature-card" data-v-f1aa8b95="">
 <div class="feature-image-wrapper" data-v-f1aa8b95="">
-<img alt="成為你長久陪伴的學習夥伴" class="feature-image" data-file="assets/7a620f108cf2df54.png" data-nuxt-img="" data-v-f1aa8b95="" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
+<video aria-label="一個人學習，一群人同行" class="feature-image feature-video" data-poster-file="assets/7a620f108cf2df54.png" data-v-f1aa8b95="" height="720" id="learning-feature-video-3" loop="" muted="" playsinline="" preload="metadata" width="1280"><source src="./feature-learning-together.mp4" type="video/mp4"/>您的瀏覽器不支援影片播放。</video>
 <div class="triangle-left" data-v-f1aa8b95="">
 </div>
 <div class="triangle-right" data-v-f1aa8b95="">
 </div>
-</div>
-<h3 class="feature-title" data-v-f1aa8b95="">
-         成為你長久陪伴的學習夥伴
-        </h3>
-<p class="feature-description" data-v-f1aa8b95="">
-         我們不只希望陪你上一堂課，更想成為一路並行的學習夥伴。從社區到海外，從企業到家庭，「知時選課」讓知識流動，也讓每一段學習都被溫柔地接住。讓學習，成為人生中最柔軟也最堅定的力量。
-        </p>
+<button aria-controls="learning-feature-video-3" aria-label="播放影片：一個人學習，一群人同行" class="feature-video-toggle" type="button"><span aria-hidden="true" class="video-play-icon"></span><span aria-hidden="true" class="video-pause-icon"></span></button></div>
+<h3 class="feature-title" data-v-f1aa8b95="">一個人學習，一群人同行</h3>
+<p class="feature-description" data-v-f1aa8b95="">有些事情自己也能學，但有人一起交流、分享經驗、互相鼓勵，學習就不再只是上完一堂課。慢慢地，我們認識新的朋友，也讓生活多了一群可以一起往前走的人。</p>
 </div>
 </div>
 <div class="carousel-dots mobile-only" data-v-f1aa8b95="">
