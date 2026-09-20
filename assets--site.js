@@ -9,11 +9,6 @@
   const image=x=>window.timelyAsset?window.timelyAsset(x):new URL(x,base).href;
   let toastTimer;
   function toast(text){let node=$('#static-toast');if(!node){node=document.createElement('div');node.id='static-toast';node.setAttribute('role','status');document.body.append(node);}node.textContent=text;node.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>node.classList.remove('show'),4500);}
-  function getCart(){try{return JSON.parse(localStorage.getItem('timely-static-cart')||'[]')}catch{return []}}
-  function setCart(items){localStorage.setItem('timely-static-cart',JSON.stringify(items))}
-  function addCart(){const item=catalog.find(x=>x.route===route);if(!item)return;const qty=Number($('input[type=number]')?.value)||1;const items=getCart();const found=items.find(x=>x.route===route);if(found)found.quantity+=qty;else items.push({...item,quantity:qty});setCart(items);toast('已加入購物車');}
-  function renderCart(){const target=$('#cart-items');if(!target)return;const items=getCart();target.innerHTML=items.length?items.map((x,i)=>`<article class="static-cart-row"><img src="${esc(image(x.image))}" alt=""><div><a href="${esc(page(x.route))}">${esc(x.title)}</a><p>NT$ ${Number(x.price||0).toLocaleString()}</p></div><input aria-label="${esc(x.title)}數量" type="number" min="1" value="${x.quantity}" data-cart-qty="${i}"><button data-remove="${i}">移除</button></article>`).join(''):'<div class="static-empty"><h2>購物車目前沒有商品</h2><p>挑一堂喜歡的課，開始新的學習。</p></div>';$('.cart-total').textContent=items.length?'合計 NT$ '+items.reduce((a,x)=>a+x.price*x.quantity,0).toLocaleString():'';}
-  renderCart();
 
   // Carousel containers retain the captured layout, with touch and button navigation.
   $$('.course-cards-container,.star-cards-container').forEach(e=>{e.style.transform='none';});
@@ -73,17 +68,8 @@
     if(target.closest('.hero-section .course-cover')){if(config.hero[slide].route)go(config.hero[slide].route);return;}
     const b=target.closest('button');
     if(b){const label=(b.getAttribute('aria-label')||b.textContent).trim();
-      if(label==='選單'){let m=$('#static-mobile-menu');if(!m){m=document.createElement('nav');m.id='static-mobile-menu';m.innerHTML=[['課程','/courses'],['選品','/products'],['最新文章','/articles'],['登入 / 註冊','/login']].map(([t,r])=>`<a href="${page(r)}">${t}</a>`).join('');$('header').append(m);}m.classList.toggle('is-open');return;}
-      if(label==='購物車'){go('/cart');return;}
-      if(label==='登入 / 註冊'){go('/login');return;}
+      if(label==='選單'){let m=$('#static-mobile-menu');if(!m){m=document.createElement('nav');m.id='static-mobile-menu';m.innerHTML=[['課程','/courses'],['選品','/products'],['最新文章','/articles']].map(([t,r])=>`<a href="${page(r)}">${t}</a>`).join('');$('header').append(m);}m.classList.toggle('is-open');return;}
       if(label==='搜尋'&&b.closest('header')){go('/search');return;}
-      if(b.classList.contains('password-toggle')){const input=$('input',b.parentElement);if(input)input.type=input.type==='password'?'text':'password';return;}
-      if(b.classList.contains('btn-line')){toast('此版本為前端展示，尚未連接 LINE 會員服務。');return;}
-      if((route==='/login'||route==='/register')&&b.classList.contains('tab-button')){go(label==='註冊'?'/register':'/login');return;}
-      if(label==='立即購買'||label==='加入購物車'||b.classList.contains('btn-secondary-mobile')){addCart();if(label==='立即購買')go('/cart');return;}
-      if(b.id==='checkout-demo'){toast('此版本為前端展示，尚未連接金流，不會收款。');return;}
-      if(b.hasAttribute('data-remove')){const items=getCart();items.splice(Number(b.dataset.remove),1);setCart(items);renderCart();return;}
-      if(b.classList.contains('quantity-btn')){const area=b.parentElement,input=$('input',area);if(input){const buttons=$$('button',area);input.value=Math.max(1,(Number(input.value)||1)+(buttons.indexOf(b)===0?-1:1));buttons[0].disabled=Number(input.value)<=1;}return;}
       if(b.classList.contains('faq-question')){const item=b.closest('.faq-item')||b.parentElement;item.classList.toggle('active');item.classList.toggle('open');const answer=$('.faq-answer',item);if(answer){answer.hidden=!item.classList.contains('open');answer.style.display=answer.hidden?'none':'block';}return;}
       if(label.startsWith('查看所有')){go(label.includes('選品')?'/products':'/courses');return;}
       if(b.classList.contains('search-button')){if(contentGrid){keyword=$('input',b.closest('.search-container')||b.parentElement)?.value||'';pageNumber=1;filterCards();}else search();return;}
@@ -95,11 +81,9 @@
       if(label==='分享'){navigator.clipboard?.writeText(location.href).then(()=>toast('已複製文章連結')).catch(()=>toast(location.href));return;}
       if(b.classList.contains('article-back-to-top')){window.scrollTo({top:0,behavior:'smooth'});return;}
     }
-    if(target.closest('.forgot-password')){go('/login/forgot-password');return;}
     const link=target.closest('[data-route]');if(link&&!target.closest('input,select,textarea')){event.preventDefault();go(link.dataset.route,link.dataset.query||'');}
   });
   document.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.matches('[data-route]'))go(event.target.dataset.route);if(event.key==='Enter'&&event.target.matches('.content-section input')){event.preventDefault();keyword=event.target.value;pageNumber=1;filterCards();}});
-  document.addEventListener('input',event=>{if(event.target.matches('.content-section input')){keyword=event.target.value;pageNumber=1;filterCards();}if(event.target.matches('[data-cart-qty]')){const items=getCart();items[Number(event.target.dataset.cartQty)].quantity=Math.max(1,Number(event.target.value)||1);setCart(items);$('.cart-total').textContent='合計 NT$ '+items.reduce((a,x)=>a+x.price*x.quantity,0).toLocaleString();}});
-  document.addEventListener('submit',event=>{event.preventDefault();if(event.target.closest('.search-section'))search();else toast('此版本為前端展示，尚未連接帳號服務，不會傳送表單資料。');});
-  $$('.btn-submit').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();toast('此版本為前端展示，尚未連接帳號服務，不會傳送表單資料。');}));
+  document.addEventListener('input',event=>{if(event.target.matches('.content-section input')){keyword=event.target.value;pageNumber=1;filterCards();}});
+  document.addEventListener('submit',event=>{if(event.target.closest('.search-section')){event.preventDefault();search();}});
 })();
