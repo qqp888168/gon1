@@ -28,7 +28,7 @@
 </script>
 <script src="./assets--config.js?v=20260916-carousel3">
 </script>
-<script defer="" src="./assets--site.js?v=20260920-line-purchase">
+<script defer="" src="./assets--site.js?v=20260920-course-navigation">
 </script>
 <style id="custom-home-banner-layout">.hero-section .course-cover{aspect-ratio:1280/511;cursor:default}
 .hero-section .cover-image--base{object-fit:contain}
@@ -82,7 +82,10 @@
 @media(max-width:1200px){#home-learning-features .feature-image-wrapper{--notch-width:40px;--notch-half-height:50px}}
 @media(max-width:1024px){#home-learning-features .feature-image-wrapper{--notch-width:30px;--notch-half-height:40px}}
 </style><script data-feature-videos="" defer="" src="./assets--feature-videos.js?v=20260917-videos"></script><link data-good-age-brand="" href="./assets--brand.css?v=20260917-brand" rel="stylesheet"/>
-<style id="home-course-links-style">a.course-card{color:inherit;text-decoration:none}a.course-card:focus-visible{outline:3px solid #A66329;outline-offset:4px}</style><style id="line-purchase-style">a.line-purchase-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box}a.line-purchase-link:focus-visible{outline:3px solid #A66329;outline-offset:4px}</style></head>
+<style id="home-course-links-style">a.course-card{color:inherit;text-decoration:none}a.course-card:focus-visible{outline:3px solid #A66329;outline-offset:4px}</style><style id="line-purchase-style">a.line-purchase-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box}a.line-purchase-link:focus-visible{outline:3px solid #A66329;outline-offset:4px}</style><style id="course-navigation-style">a.category-card{color:inherit;text-decoration:none}
+a.category-card:focus-visible{outline:3px solid #A66329;outline-offset:4px}
+.static-category-filter{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:20px 0;padding:14px 18px;border-radius:12px;background:#ffede3;color:#4a270d}
+.static-category-filter a{color:inherit;text-underline-offset:3px}</style></head>
 <body>
 <div id="__nuxt">
 <div class="app-wrapper">
@@ -112,7 +115,7 @@
           </a>
 </li>
 <li class="nav-item" data-v-3e31363f="">
-<a class="nav-link" data-v-3e31363f="" href="https://line.me/R/ti/p/~@timelyclass" rel="noopener noreferrer" target="_blank">
+<a class="nav-link" data-v-3e31363f="" href="https://line.me/ti/p/KVCgqj8t2Q" rel="noopener noreferrer" target="_blank">
            加入 Line 群
           </a>
 </li>
@@ -126,8 +129,6 @@
 </circle>
 </svg>
 </button>
-
-
 </div>
 </nav>
 <div class="mobile-actions" data-v-3e31363f="">
@@ -139,7 +140,6 @@
 </circle>
 </svg>
 </button>
-
 <button aria-label="選單" class="hamburger-btn" data-v-3e31363f="">
 <span data-v-3e31363f="">
 </span>
@@ -1723,9 +1723,9 @@
           堂課程任你選
          </span>
 </div>
-<div class="search-input-wrapper" data-v-e6353a26="">
-<input class="search-input" data-v-e6353a26="" placeholder="輸入你想學的課程..." type="text"/>
-<button class="search-button" data-v-e6353a26="">
+<form action="./courses.html" aria-label="搜尋課程" class="search-input-wrapper" data-v-e6353a26="" method="get">
+<input aria-label="輸入你想學的課程" class="search-input" data-v-e6353a26="" name="keyword" placeholder="輸入你想學的課程..." type="text"/>
+<button class="search-button" data-v-e6353a26="" type="submit">
 <span class="search-button-text" data-v-e6353a26="">
            搜尋
           </span>
@@ -1736,14 +1736,14 @@
 </path>
 </svg>
 </button>
-</div>
+</form>
 </div>
 <div class="category-area" data-v-e6353a26="">
 <h3 class="category-title" data-v-e6353a26="">
          熱門類別
         </h3>
 <div class="category-list" data-v-e6353a26="">
-<div class="category-card" data-v-e6353a26="">
+<a aria-label="運動課程" class="category-card" data-v-e6353a26="" href="./courses.html?category=%E9%81%8B%E5%8B%95">
 <div class="category-icon" data-v-e6353a26="">
 <svg class="lucide lucide-dumbbell-icon lucide-dumbbell icon-color" data-v-e6353a26="" fill="none" height="32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z">
@@ -1774,8 +1774,8 @@
             健康是最棒的療法
            </p>
 </div>
-</div>
-<div class="category-card" data-v-e6353a26="">
+</a>
+<a aria-label="生活課程" class="category-card" data-v-e6353a26="" href="./courses.html?category=%E7%94%9F%E6%B4%BB">
 <div class="category-icon" data-v-e6353a26="">
 <svg class="lucide lucide-coffee-icon lucide-coffee icon-color" data-v-e6353a26="" fill="none" height="32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg">
 <path d="M10 2v2">
@@ -1804,8 +1804,8 @@
             幸福是一種被需要的智慧
            </p>
 </div>
-</div>
-<div class="category-card" data-v-e6353a26="">
+</a>
+<a aria-label="烹飪課程" class="category-card" data-v-e6353a26="" href="./courses.html?category=%E7%83%B9%E9%A3%AA">
 <div class="category-icon" data-v-e6353a26="">
 <svg class="lucide lucide-chef-hat-icon lucide-chef-hat icon-color" data-v-e6353a26="" fill="none" height="32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg">
 <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z">
@@ -1830,7 +1830,7 @@
             健康與美味,不該是取捨
            </p>
 </div>
-</div>
+</a>
 </div>
 </div>
 </div>
@@ -2165,7 +2165,7 @@
 </path>
 </svg>
 </a>
-<a aria-label="LINE 官方帳號" class="social-link" data-v-057db9ed="" href="https://line.me/R/ti/p/@timelyclass" rel="noopener noreferrer" target="_blank">
+<a aria-label="LINE 官方帳號" class="social-link" data-v-057db9ed="" href="https://line.me/ti/p/KVCgqj8t2Q" rel="noopener noreferrer" target="_blank">
 <svg aria-hidden="true" data-v-057db9ed="" fill="currentColor" height="24" viewbox="0 0 24 24" width="24">
 <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.64c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.075.59.12.272.086.695-.002.965-.235.725-.506 1.902-.617 2.338-.133.524.193.963.709.878 4.269-.713 7.855-3.363 9.504-7.07C23.286 15.296 24 12.881 24 10.314" data-v-057db9ed="">
 </path>

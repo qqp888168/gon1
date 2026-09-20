@@ -13,11 +13,19 @@
   // Carousel containers retain the captured layout, with touch and button navigation.
   $$('.course-cards-container,.star-cards-container').forEach(e=>{e.style.transform='none';});
   const contentGrid=$('.content-grid');let category='全部',keyword='',pageNumber=Number(new URLSearchParams(location.search).get('page'))||1;
+  const courseCategory=route==='/courses'?(new URLSearchParams(location.search).get('category')||''):'';
   const pageSize=route==='/articles'?9:route==='/courses'?15:12;
   const contentCards=contentGrid?$$(':scope > .content-card',contentGrid):[];
   const typeNames={RECORDED:'錄播課程',LIVE:'直播課程',OFFLINE:'實體課程'};
-  function filterCards(){if(!contentCards.length)return;const filtered=contentCards.filter(c=>{const text=c.textContent;const tags=$$('.tag',c).map(x=>x.textContent.trim());return (!keyword||text.toLowerCase().includes(keyword.toLowerCase()))&&(category==='全部'||tags.includes(category)||typeNames[c.dataset.courseType]===category);});const total=Math.max(1,Math.ceil(filtered.length/pageSize));pageNumber=Math.min(pageNumber,total);contentCards.forEach(c=>c.hidden=true);filtered.slice((pageNumber-1)*pageSize,pageNumber*pageSize).forEach(c=>c.hidden=false);$$('.pagination-number').forEach(b=>{const n=Number(b.textContent.trim());b.hidden=n>total;b.classList.toggle('active',n===pageNumber);});let empty=$('#static-list-empty');if(!empty){empty=document.createElement('p');empty.id='static-list-empty';empty.className='static-empty';contentGrid.after(empty);}empty.textContent='沒有符合條件的內容，請試試其他分類或關鍵字。';empty.hidden=filtered.length>0;}
+  function filterCards(){if(!contentCards.length)return;const filtered=contentCards.filter(c=>{const text=c.textContent;const tags=$$('.tag',c).map(x=>x.textContent.trim());return (!keyword||text.toLowerCase().includes(keyword.toLowerCase()))&&(category==='全部'||tags.includes(category)||typeNames[c.dataset.courseType]===category)&&(!courseCategory||tags.includes(courseCategory));});const total=Math.max(1,Math.ceil(filtered.length/pageSize));pageNumber=Math.min(pageNumber,total);contentCards.forEach(c=>c.hidden=true);filtered.slice((pageNumber-1)*pageSize,pageNumber*pageSize).forEach(c=>c.hidden=false);$$('.pagination-number').forEach(b=>{const n=Number(b.textContent.trim());b.hidden=n>total;b.classList.toggle('active',n===pageNumber);});let empty=$('#static-list-empty');if(!empty){empty=document.createElement('p');empty.id='static-list-empty';empty.className='static-empty';contentGrid.after(empty);}empty.textContent='沒有符合條件的內容，請試試其他分類或關鍵字。';empty.hidden=filtered.length>0;}
   if(contentCards.length){const params=new URLSearchParams(location.search);keyword=params.get('keyword')||params.get('q')||'';if(params.get('type')==='physical')category='實體課程';const input=$('.content-section input');if(input)input.value=keyword;filterCards();}
+
+  // Show the category selected from the homepage alongside the course list.
+  if(contentGrid&&courseCategory){
+    const notice=document.createElement('div');notice.className='static-category-filter';
+    notice.innerHTML=`<span>課程分類：${esc(courseCategory)}</span><a href="${esc(page('/courses'))}">查看全部課程</a>`;
+    contentGrid.before(notice);
+  }
 
   function search(){const input=$('.search-section input')||$('.search-container input')||$('input[type=search]')||$('input[placeholder]');const term=input?.value.trim()||'';if(route!=='/search'){go('/search','q='+encodeURIComponent(term));return;}let results=$('#static-search-results');if(!results){results=document.createElement('div');results.id='static-search-results';$('.search-section').append(results);}$$('.empty-state,.search-empty,.empty-results').forEach(e=>e.hidden=true);const matched=catalog.filter(x=>term&&[x.title,x.summary,x.category].join(' ').toLowerCase().includes(term.toLowerCase()));results.innerHTML=`<p class="static-result-count">${term?'找到 '+matched.length+' 筆「'+esc(term)+'」相關內容':'請輸入關鍵字開始搜尋'}</p><div class="static-results-grid">`+matched.map(x=>`<a class="static-result-card" href="${page(x.route)}"><img src="${esc(image(x.image))}" alt=""><h3>${esc(x.title)}</h3><p>${x.price?'NT$ '+Number(x.price).toLocaleString():'閱讀文章'}</p></a>`).join('')+'</div>';}
   if(route==='/search'){const term=new URLSearchParams(location.search).get('q')||'';const input=$('.search-section input');if(input)input.value=term;if(term)search();}
@@ -72,7 +80,7 @@
       if(label==='搜尋'&&b.closest('header')){go('/search');return;}
       if(b.classList.contains('faq-question')){const item=b.closest('.faq-item')||b.parentElement;item.classList.toggle('active');item.classList.toggle('open');const answer=$('.faq-answer',item);if(answer){answer.hidden=!item.classList.contains('open');answer.style.display=answer.hidden?'none':'block';}return;}
       if(label.startsWith('查看所有')){go(label.includes('選品')?'/products':'/courses');return;}
-      if(b.classList.contains('search-button')){if(contentGrid){keyword=$('input',b.closest('.search-container')||b.parentElement)?.value||'';pageNumber=1;filterCards();}else search();return;}
+      if(b.classList.contains('search-button')){if(b.closest('.search-category-section'))return;if(contentGrid){keyword=$('input',b.closest('.search-container')||b.parentElement)?.value||'';pageNumber=1;filterCards();}else search();return;}
       if(b.classList.contains('tab-button')&&contentGrid){category=label;pageNumber=1;$$('.content-section .tab-button').forEach(x=>x.classList.toggle('active',x===b));filterCards();return;}
       if(b.classList.contains('tab-button')&&b.closest('.course-detail-content')){const heading=$$('h2').find(x=>x.textContent.includes(label));heading?.scrollIntoView({behavior:'smooth',block:'start'});return;}
       if(b.classList.contains('pagination-number')){pageNumber=Number(label)||1;filterCards();$('.content-section')?.scrollIntoView({behavior:'smooth'});return;}
