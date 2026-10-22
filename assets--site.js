@@ -12,6 +12,12 @@
 
   // Carousel containers retain the captured layout, with touch and button navigation.
   $$('.course-cards-container,.star-cards-container').forEach(e=>{e.style.transform='none';});
+  function courseScroller(section){const inner=$('.course-cards-container',section);return inner&&inner.scrollWidth>inner.clientWidth+1?inner:$('.course-cards-wrapper,.star-cards-wrapper,.reviews-container',section);}
+  $$('.course-section').forEach(section=>{
+    const update=()=>{const scroller=courseScroller(section);if(!scroller)return;const prev=$('.nav-button.prev',section),next=$('.nav-button.next',section);if(prev)prev.disabled=scroller.scrollLeft<=1;if(next)next.disabled=scroller.scrollLeft+scroller.clientWidth>=scroller.scrollWidth-1;};
+    $$('.course-cards-container,.course-cards-wrapper',section).forEach(scroller=>scroller.addEventListener('scroll',update,{passive:true}));
+    window.addEventListener('resize',update);update();
+  });
   const contentGrid=$('.content-grid');let category='全部',keyword='',pageNumber=Number(new URLSearchParams(location.search).get('page'))||1;
   const courseCategory=route==='/courses'?(new URLSearchParams(location.search).get('category')||''):'';
   const pageSize=route==='/articles'?9:route==='/courses'?15:12;
@@ -27,7 +33,7 @@
     contentGrid.before(notice);
   }
 
-  function search(){const input=$('.search-section input')||$('.search-container input')||$('input[type=search]')||$('input[placeholder]');const term=input?.value.trim()||'';if(route!=='/search'){go('/search','q='+encodeURIComponent(term));return;}let results=$('#static-search-results');if(!results){results=document.createElement('div');results.id='static-search-results';$('.search-section').append(results);}$$('.empty-state,.search-empty,.empty-results').forEach(e=>e.hidden=true);const matched=catalog.filter(x=>term&&[x.title,x.summary,x.category].join(' ').toLowerCase().includes(term.toLowerCase()));results.innerHTML=`<p class="static-result-count">${term?'找到 '+matched.length+' 筆「'+esc(term)+'」相關內容':'請輸入關鍵字開始搜尋'}</p><div class="static-results-grid">`+matched.map(x=>`<a class="static-result-card" href="${page(x.route)}"><img src="${esc(image(x.image))}" alt=""><h3>${esc(x.title)}</h3><p>${x.price?'NT$ '+Number(x.price).toLocaleString():'閱讀文章'}</p></a>`).join('')+'</div>';}
+  function search(){const input=$('.search-section input')||$('.search-container input')||$('input[type=search]')||$('input[placeholder]');const term=input?.value.trim()||'';if(route!=='/search'){go('/search','q='+encodeURIComponent(term));return;}let results=$('#static-search-results');if(!results){results=document.createElement('div');results.id='static-search-results';$('.search-section').append(results);}$$('.empty-state,.search-empty,.empty-results').forEach(e=>e.hidden=true);const matched=catalog.filter(x=>term&&[x.title,x.summary,x.category].join(' ').toLowerCase().includes(term.toLowerCase()));results.innerHTML=`<p class="static-result-count">${term?'找到 '+matched.length+' 筆「'+esc(term)+'」相關內容':'請輸入關鍵字開始搜尋'}</p><div class="static-results-grid">`+matched.map(x=>`<a class="static-result-card" href="${esc(x.externalUrl||page(x.route))}"><img src="${esc(image(x.image))}" alt=""><h3>${esc(x.title)}</h3><p>${esc(x.priceLabel||(x.price?'NT$ '+Number(x.price).toLocaleString():'閱讀文章'))}</p></a>`).join('')+'</div>';}
   if(route==='/search'){const term=new URLSearchParams(location.search).get('q')||'';const input=$('.search-section input');if(input)input.value=term;if(term)search();}
 
   let slide=0,heroTimer;
@@ -85,7 +91,7 @@
       if(b.classList.contains('tab-button')&&b.closest('.course-detail-content')){const heading=$$('h2').find(x=>x.textContent.includes(label));heading?.scrollIntoView({behavior:'smooth',block:'start'});return;}
       if(b.classList.contains('pagination-number')){pageNumber=Number(label)||1;filterCards();$('.content-section')?.scrollIntoView({behavior:'smooth'});return;}
       if(b.classList.contains('pagination-button')){const arrows=$$('.pagination-button');pageNumber=Math.max(1,pageNumber+(arrows.indexOf(b)===0?-1:1));filterCards();return;}
-      if(b.classList.contains('nav-button')||b.classList.contains('nav-arrow')){const section=b.closest('section')||b.parentElement.parentElement;const wrap=$('.course-cards-wrapper,.star-cards-wrapper,.reviews-container',section);wrap?.scrollBy({left:(b.classList.contains('prev')?-1:1)*wrap.clientWidth*.85,behavior:'smooth'});return;}
+      if(b.classList.contains('nav-button')||b.classList.contains('nav-arrow')){const section=b.closest('section')||b.parentElement.parentElement;const wrap=courseScroller(section);wrap?.scrollBy({left:(b.classList.contains('prev')?-1:1)*wrap.clientWidth*.85,behavior:'smooth'});return;}
       if(label==='分享'){navigator.clipboard?.writeText(location.href).then(()=>toast('已複製文章連結')).catch(()=>toast(location.href));return;}
       if(b.classList.contains('article-back-to-top')){window.scrollTo({top:0,behavior:'smooth'});return;}
     }

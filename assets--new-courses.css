@@ -1,0 +1,6 @@
+/* Preserve the original course-card typography, spacing, and colors. */
+#content-section,#recorded-courses,#in-person-courses{scroll-margin-top:100px}
+a[data-new-course]{color:inherit;text-decoration:none}
+a[data-new-course][hidden]{display:none!important}
+a[data-new-course]:focus-visible{outline:3px solid #a66329;outline-offset:4px}
+[data-new-course] .course-info{flex-wrap:wrap}
