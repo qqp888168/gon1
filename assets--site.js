@@ -3,6 +3,7 @@
   const config=window.TIMELY_CONFIG, catalog=config.catalog;
   const base=new URL('./',document.currentScript.src), route=document.documentElement.dataset.staticRoute;
   const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+  window.TIMELY_ROUTES['/news']='news.html';
   const page=(r,q='')=>new URL((window.TIMELY_ROUTES[r]||'index.html')+(q?'?'+q:''),base).href;
   const go=(r,q='')=>location.assign(page(r,q));
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -82,7 +83,7 @@
     if(target.closest('.hero-section .course-cover')){if(config.hero[slide].route)go(config.hero[slide].route);return;}
     const b=target.closest('button');
     if(b){const label=(b.getAttribute('aria-label')||b.textContent).trim();
-      if(label==='選單'){let m=$('#static-mobile-menu');if(!m){m=document.createElement('nav');m.id='static-mobile-menu';m.innerHTML=[['課程','/courses'],['最新文章','/articles']].map(([t,r])=>`<a href="${page(r)}">${t}</a>`).join('');$('header').append(m);}m.classList.toggle('is-open');return;}
+      if(label==='選單'){let m=$('#static-mobile-menu');if(!m){m=document.createElement('nav');m.id='static-mobile-menu';m.innerHTML=[['課程','/courses'],['最新文章','/articles'],['新聞報導','/news']].map(([t,r])=>`<a href="${page(r)}">${t}</a>`).join('');$('header').append(m);}m.classList.toggle('is-open');return;}
       if(label==='搜尋'&&b.closest('header')){go('/search');return;}
       if(b.classList.contains('faq-question')){const item=b.closest('.faq-item')||b.parentElement;item.classList.toggle('active');item.classList.toggle('open');const answer=$('.faq-answer',item);if(answer){answer.hidden=!item.classList.contains('open');answer.style.display=answer.hidden?'none':'block';}return;}
       if(label.startsWith('查看所有')){go('/courses');return;}
